@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "lib": [
+      "es2015",
+      "es2017"
+    ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "core-js",
+      "mocha"
+    ],
+    "outDir": "./build"
+  },
+  "exclude": [
+    "build",
+    "__tests__/**/*.ts"
+  ],
+  "include": [
+    "./src/**/*"
+  ],
+  "filesGlob": [
+    "./**/*.ts",
+    "!./node_modules/**/*.ts"
+  ]
+}
