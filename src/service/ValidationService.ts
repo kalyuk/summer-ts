@@ -1,6 +1,6 @@
 import { validate } from 'class-validator';
 import { Service } from '../annotation/Service';
-import { Exception, Exceptions } from '../core/Exception';
+import { Exception, ExceptionError, Exceptions } from '../core/Exception';
 
 @Service()
 export class ValidationService {
@@ -10,10 +10,10 @@ export class ValidationService {
       throw new Exception(
         Exceptions.BUSINESS_CONFLICT,
         'invalid_input_data',
-        errors.map((error) => {
+        errors.map((error): ExceptionError => {
           return {
-            field: error.property,
-            message: error.constraints[Object.keys(error.constraints)[0]]
+            error: error.constraints[Object.keys(error.constraints)[0]],
+            field: error.property
           };
         }));
     }

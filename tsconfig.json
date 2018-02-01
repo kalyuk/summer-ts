@@ -20,7 +20,7 @@
       "core-js",
       "mocha"
     ],
-    "outDir": "./build"
+    "outDir": "."
   },
   "exclude": [
     "build",

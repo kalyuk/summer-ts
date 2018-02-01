@@ -2,3 +2,10 @@
 build
 node_modules
 .nyc_output
+*.d.ts
+*.js
+./util
+./service,
+./model
+./core
+./annotation

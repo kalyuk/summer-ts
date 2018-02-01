@@ -1,5 +1,6 @@
 import { MinLength } from 'class-validator';
 import { Autowired } from '../src/annotation/Autowired';
+import { Controller } from '../src/annotation/Controller';
 import { RequestBody, RequestPath, RequestQuery } from '../src/annotation/RequestInput';
 import { RequestMapping } from '../src/annotation/RequestMapping';
 import { Service } from '../src/annotation/Service';
@@ -26,7 +27,7 @@ describe('Application', () => {
   }
 
   @Service()
-  @RequestMapping('/api')
+  @Controller('/api')
   class TestService {
 
     @Autowired()

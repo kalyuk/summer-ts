@@ -11,8 +11,7 @@ export interface RequestMappingOptions {
 export function RequestMapping(path: string, method: RouterMethod = RouterMethod.ALL, options: RequestMappingOptions = {}) {
   return (target, property, descriptor: PropertyDescriptor) => {
     if (!property) {
-      registry.set(target, 'basePath', path);
-      return target;
+      throw new Error('RequestMapping maybe apply only to method, use Controller annotation');
     }
     const input = Reflect.getMetadata('design:paramtypes', target, property);
     const params = Reflect.getMetadata('ctx', target, property) || [];
