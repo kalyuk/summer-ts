@@ -1,4 +1,4 @@
-import { IsEmpty, MinLength } from 'class-validator';
+import { MinLength } from 'class-validator';
 import { Autowired } from '../src/annotation/Autowired';
 import { RequestBody, RequestPath, RequestQuery } from '../src/annotation/RequestInput';
 import { RequestMapping } from '../src/annotation/RequestMapping';
@@ -12,7 +12,7 @@ import { SwaggerService } from '../src/service/SwaggerService';
 
 describe('Application', () => {
   class TestModel {
-    @MinLength(10)
+    @MinLength(2)
     get password(): string {
       return this._password;
     }
