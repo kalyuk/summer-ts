@@ -26,6 +26,7 @@ describe('Application', () => {
   }
 
   @Service()
+  @RequestMapping('/api')
   class TestService {
 
     @Autowired()

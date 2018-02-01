@@ -1,10 +1,10 @@
-import { registry } from '../core/Registry';
-
 export function Autowired() {
-  return (target, property: string) => {
+  return (target, property: string, descriptor: PropertyDescriptor) => {
     const type = Reflect.getMetadata('design:type', target, property);
-    const data = {};
-    data[property] = type;
-    registry.add(target.constructor, 'autowired', data);
+    return {
+      get: function () {
+        return this.getAppContext().getBean(type);
+      }
+    };
   };
 }

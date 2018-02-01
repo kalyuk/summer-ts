@@ -28,7 +28,7 @@ export function RequestCtx() {
 }
 
 function requestCtx(key: string, name: string, options: RequestOptions = {}) {
-  return (target, propertyKey, parameterIndex) => {
+  return function (target, propertyKey, parameterIndex)  {
     const data = Reflect.getMetadata('ctx', target, propertyKey) || [];
     options.validator = options.validator ? options.validator : {};
     data.push([key, parameterIndex, name, options]);

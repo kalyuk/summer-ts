@@ -102,11 +102,12 @@ export class RouterService {
         if (props[ROUTER_PROP_KEY]) {
           props[ROUTER_PROP_KEY].forEach(([property, route, options]) => {
             const target = registry.getByIndex(index);
+            const basePath = props.basePath || '';
             const instance = (this as any).getAppContext().getBean(target);
             if (!instance[property]) {
               throw new Error(`property "${property}" is private`);
             }
-            this.add(route.method, route.path, options.payload, instance[property].bind(instance));
+            this.add(route.method, basePath + route.path, options.payload, instance[property].bind(instance));
           });
         }
       });

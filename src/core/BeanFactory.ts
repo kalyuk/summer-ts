@@ -53,19 +53,6 @@ export class BeanFactory {
         }
       };
 
-      if (props.autowired) {
-        Object.keys(props.autowired).forEach((propertyName) => {
-          Instance.prototype[propertyName] = this.getBean(props.autowired[propertyName]);
-        });
-      }
-
-      if (props.value) {
-        Object.keys(props.value).forEach((propertyName) => {
-          const [key, defaultValue] = props.value[propertyName];
-          Instance.prototype[propertyName] = this.appContext.getConfig(key) || defaultValue;
-        });
-      }
-
       if (isCyclic(Instance)) {
         throw new Error(`${Instance.name} have cyclic deps`);
       }
