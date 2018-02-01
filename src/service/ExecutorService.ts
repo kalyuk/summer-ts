@@ -17,7 +17,7 @@ export class ExecutorService {
   public async execute(ctx: RequestContext): Promise<ResponseModel> {
     try {
       const route = await this.routerService.match(ctx);
-      const result = route.action(ctx);
+      const result = await route.action(ctx);
 
       if (result instanceof ResponseModel) {
         return result;

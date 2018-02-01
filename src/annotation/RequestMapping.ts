@@ -1,5 +1,6 @@
 import { registry } from '../core/Registry';
 import { ContentType, HttpPayload, ROUTER_PROP_KEY, RouterMethod } from '../service/RouterService';
+import { ValidationService } from '../service/ValidationService';
 
 export interface RequestMappingOptions {
   payload?: HttpPayload;
@@ -18,9 +19,11 @@ export function RequestMapping(path: string, method: RouterMethod = RouterMethod
     params.sort((a, b) => a[1] - b[1]);
 
     const action = descriptor.value;
-    descriptor.value = function (ctx) {
+    descriptor.value = async function (ctx) {
+      const validationService = this.getAppContext().getBean(ValidationService);
+
       const args = [];
-      params.forEach(([field, index, name, defaultValue]) => {
+      params.forEach(([field, index, name, {defaultValue}]) => {
         const value = (!name) ? ctx : name.split('.')
           .reduce((o, i) => o[i] ? o[i] : defaultValue, name === field ? ctx : ctx[field]);
 
@@ -29,7 +32,15 @@ export function RequestMapping(path: string, method: RouterMethod = RouterMethod
           .filter(([key, subDescriptor]) => typeof subDescriptor.set === 'function')
           .forEach(([key]) => args[index][key] = value[key]);
       });
-      return action.apply(this, input.map((_, index) => args[index] ? args[index] : this.getAppContext().getBean(input[index])));
+      const values = input.map((_, index) => args[index] ? args[index] : this.getAppContext().getBean(input[index]));
+
+      for (const [field, index, name, {skipValidate, validateGroups, validator}] of params) {
+        if (!skipValidate) {
+          await validationService.validate(args[index], {...validator, groups: validateGroups});
+        }
+      }
+
+      return action.apply(this, values);
     };
     registry.add(target.constructor, ROUTER_PROP_KEY, [property, {method, path}, options]);
   };

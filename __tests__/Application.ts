@@ -1,5 +1,18 @@
+import { IsEmpty, MinLength } from 'class-validator';
+import { Autowired } from '../src/annotation/Autowired';
+import { RequestBody, RequestPath, RequestQuery } from '../src/annotation/RequestInput';
+import { RequestMapping } from '../src/annotation/RequestMapping';
+import { Service } from '../src/annotation/Service';
+import { Application } from '../src/Application';
+import { ItemModel } from '../src/model/dto/ItemModel';
+import { HttpService } from '../src/service/HttpService';
+import { LOG_LEVEL, LoggerService } from '../src/service/LoggerService';
+import { RouterService } from '../src/service/RouterService';
+import { SwaggerService } from '../src/service/SwaggerService';
+
 describe('Application', () => {
-  /* class TestModel {
+  class TestModel {
+    @MinLength(10)
     get password(): string {
       return this._password;
     }
@@ -30,8 +43,10 @@ describe('Application', () => {
                       @RequestPath('id') id: number,
                       logger: LoggerService,
                       @RequestQuery('ids') ids: number[]): ItemModel<TestModel> {
+
       body.body = 'test';
       logger.render(LOG_LEVEL.INFO, 'test render');
+
       return new ItemModel(body);
     }
   }
@@ -39,5 +54,5 @@ describe('Application', () => {
   it('should be create application context', () => {
     const context = new Application();
     context.init();
-  });*/
+  });
 });

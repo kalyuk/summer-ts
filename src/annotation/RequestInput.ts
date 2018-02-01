@@ -1,27 +1,37 @@
-export function RequestBody() {
-  return requestCtx('body', 'body', null);
+import { ValidatorOptions } from 'class-validator';
+
+export interface RequestOptions {
+  defaultValue?: any;
+  validator?: ValidatorOptions;
+  skipValidate?: boolean;
+  validateGroups?: string[];
 }
 
-export function RequestQuery(name: string, defaultValue?: any) {
-  return requestCtx('query', name, defaultValue);
+export function RequestBody(options: RequestOptions = {}) {
+  return requestCtx('body', 'body', options);
 }
 
-export function RequestPath(name: string, defaultValue?: any) {
-  return requestCtx('path', name, defaultValue);
+export function RequestQuery(name: string, options: RequestOptions = {}) {
+  return requestCtx('query', name, options);
 }
 
-export function RequestHeaders(name: string, defaultValue?: any) {
-  return requestCtx('headers', name, defaultValue);
+export function RequestPath(name: string, options: RequestOptions = {}) {
+  return requestCtx('path', name, options);
+}
+
+export function RequestHeaders(name: string, options: RequestOptions = {}) {
+  return requestCtx('headers', name, options);
 }
 
 export function RequestCtx() {
   return requestCtx('ctx', null, {});
 }
 
-function requestCtx(key: string, name: string, defaultValue?: any) {
+function requestCtx(key: string, name: string, options: RequestOptions = {}) {
   return (target, propertyKey, parameterIndex) => {
     const data = Reflect.getMetadata('ctx', target, propertyKey) || [];
-    data.push([key, parameterIndex, name, defaultValue]);
+    options.validator = options.validator ? options.validator : {};
+    data.push([key, parameterIndex, name, options]);
     Reflect.defineMetadata('ctx', data, target, propertyKey);
   };
 }
