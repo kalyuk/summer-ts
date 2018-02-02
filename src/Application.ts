@@ -3,9 +3,9 @@ import { BaseEvent } from './core/BaseEvent';
 import { BeanFactory } from './core/BeanFactory';
 
 export enum BASE_EVENT {
-  INITIALIZED = 'initialized',
-  AFTER_INITIALIZE = 'afterInitialize',
-  STOP = 'stop'
+  INITIALIZED = Symbol('initialized'),
+  AFTER_INITIALIZE = Symbol('afterInitialize'),
+  STOP = Symbol('stop')
 }
 
 export interface ApplicationConfiguration {
@@ -63,8 +63,13 @@ export class Application extends BaseEvent {
       .then(() => this.emit(BASE_EVENT.AFTER_INITIALIZE));
   }
 
-  public getConfig(key: string) {
-    return key.split('.').reduce((o, i) => o[i] ? o[i] : false, this.configuration);
+  public getConfig(key?: string, defaultValue: any = false) {
+    try {
+      return key.split('.')
+        .reduce((o, i) => o[i] ? o[i] : defaultValue, this.configuration);
+    } catch (e) {
+      return defaultValue;
+    }
   }
 
   public getArg(key: string) {

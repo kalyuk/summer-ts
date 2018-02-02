@@ -8,7 +8,7 @@ export interface RequestMappingOptions {
   status?: number;
 }
 
-export function RequestMapping(path: string, method: RouterMethod = RouterMethod.ALL, options: RequestMappingOptions = {}) {
+export function RequestMapping(path: string | Function, method: RouterMethod = RouterMethod.ALL, options: RequestMappingOptions = {}) {
   return (target, property, descriptor: PropertyDescriptor) => {
     if (!property) {
       throw new Error('RequestMapping maybe apply only to method, use Controller annotation');

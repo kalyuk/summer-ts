@@ -1,7 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 
 export class ResponseModel {
-  public status?: number = 200;
 
   public headers?: IncomingHttpHeaders;
 
@@ -20,7 +19,8 @@ export class ResponseModel {
     return obj;
   }
 
-  constructor(public body?: any) {
+  constructor(public body?: any,
+              public status?: number = 200) {
 
   }
 

@@ -1,7 +1,7 @@
 import { Autowired } from '../annotation/Autowired';
 import { On } from '../annotation/On';
 import { Service } from '../annotation/Service';
-import { BASE_EVENT } from '../Application';
+import { Application, BASE_EVENT } from '../Application';
 import { Exception, Exceptions } from '../core/Exception';
 import { registry } from '../core/Registry';
 import { RequestContext } from '../core/RequestContext';
@@ -96,6 +96,7 @@ export class RouterService {
 
   @On(BASE_EVENT.INITIALIZED)
   private autorun = () => {
+    const appContext: Application = (this as any).getAppContext();
     registry
       .getAllTargetsOptions()
       .forEach((props, index) => {
@@ -103,11 +104,12 @@ export class RouterService {
           props[ROUTER_PROP_KEY].forEach(([property, route, options]) => {
             const target = registry.getByIndex(index);
             const basePath = props.basePath || '';
-            const instance = (this as any).getAppContext().getBean(target);
+            const instance = appContext.getBean(target);
             if (!instance[property]) {
               throw new Error(`property "${property}" is private`);
             }
-            this.add(route.method, basePath + route.path, options.payload, instance[property].bind(instance));
+            const path = typeof route.path === 'string' ? route.path : route.path(appContext.getConfig.bind(appContext), appContext);
+            this.add(route.method, basePath + path, options.payload, instance[property].bind(instance));
           });
         }
       });

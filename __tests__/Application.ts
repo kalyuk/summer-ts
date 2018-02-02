@@ -1,10 +1,11 @@
 import { MinLength } from 'class-validator';
 import { Autowired } from '../src/annotation/Autowired';
 import { Controller } from '../src/annotation/Controller';
+import { On } from '../src/annotation/On';
 import { RequestBody, RequestPath, RequestQuery } from '../src/annotation/RequestInput';
 import { RequestMapping } from '../src/annotation/RequestMapping';
 import { Service } from '../src/annotation/Service';
-import { Application } from '../src/Application';
+import { Application, BASE_EVENT } from '../src/Application';
 import { ItemModel } from '../src/model/dto/ItemModel';
 import { HttpService } from '../src/service/HttpService';
 import { LOG_LEVEL, LoggerService } from '../src/service/LoggerService';

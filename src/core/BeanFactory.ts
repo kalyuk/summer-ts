@@ -60,22 +60,10 @@ export class BeanFactory {
       const instance = new Instance(...params);
 
       if (props.scopeType === RegistryScopeType.singleton && props.on) {
-        const eventGroups = {};
         Object.keys(props.on)
           .forEach((property) => {
             const [event, priority] = props.on[property];
-            if (!eventGroups[event]) {
-              eventGroups[event] = [];
-            }
-            eventGroups[event].push([property, priority]);
-          });
-
-        Object.keys(eventGroups)
-          .forEach((event) => {
-            eventGroups[event].sort((a, b) => (a[1] - b[1]));
-            eventGroups[event].forEach(([property]) => {
-              this.appContext.on(event, instance[property].bind(instance));
-            });
+            this.appContext.on(event, instance[property].bind(instance), priority);
           });
       }
 

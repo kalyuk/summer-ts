@@ -1,6 +1,6 @@
 import { registry } from '../core/Registry';
 
-export function On(event: string, priority: number = 999999999) {
+export function On(event: string, priority?: number) {
   return (target, property: string) => {
     const data = {};
     data[property] = [event, priority];
